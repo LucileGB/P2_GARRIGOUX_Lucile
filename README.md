@@ -15,7 +15,7 @@ This tool scrapes the online bookseller _Book to Scrape_  and retrieves the foll
     review_rating
     image_url
 
-It also downloads every covers in a separate "cover" folder.
+It also downloads every cover in a separate "cover" folder. Cover are named after the upc of each book, so each file name is truly unique.
 
 The data is sorted in one csv file per category. Please note that prices are in pound.
 
