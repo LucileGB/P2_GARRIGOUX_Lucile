@@ -45,6 +45,7 @@ _**(scraper)** C:\Users\LG\Projet 2>_
 
 You are now inside of your virtual environment. Any library installation will take place inside this library
 
+
 **_Installing libraries_**
 
 To install the necessary libraries, use the console to navigate to the directory where you downloaded the app and its requirement.txt files. Then, type the following into the console:
