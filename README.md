@@ -23,6 +23,7 @@ You can set a delay between two book scrapes.
 
 <h2>Installation</h2>
 <h3>(Optional) Installing a virtual environment</3>
+
 If wished, you can install a virtual environment to run the app. First, use the console to install virtualenv:
 
     pip install virtualenv
@@ -44,6 +45,7 @@ _**(scraper)** C:\Users\LG\Projet 2>_
 You are now inside of your virtual environment. Any library installation will take place inside this library
 
 <h3>Installing libraries</3>
+
 To install the necessary libraries, use the console to navigate to the directory where you downloaded the app and its requirement.txt files. Then, type the following into the console:
 
     pip install -r requirements.txt
