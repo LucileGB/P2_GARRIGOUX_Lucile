@@ -43,7 +43,7 @@ _C:\Users\LG\Documents\Projet 2>_ scraper\Scripts\activate
 
 _**(scraper)** C:\Users\LG\Projet 2>_
 
-You are now inside of your virtual environment. Any library installation will take place inside this library
+You are now inside of your virtual environment. Any library installation will take place inside this environment.
 
 
 **_Installing libraries_**
