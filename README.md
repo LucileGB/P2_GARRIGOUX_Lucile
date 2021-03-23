@@ -64,8 +64,9 @@ You can also set a delay between two book scrapes. To do so, input the following
     P2_01_GARRIGOUX_Lucile.py --secs NUMBER
 
 For exemple:
-![image](https://user-images.githubusercontent.com/72474020/112191219-17af7800-8c06-11eb-9bc9-30e123acd633.png)
 
-This will start the program. A "Cover" directory and the category's CSV files will be created in the app's directory.
+    P2_01_GARRIGOUX_Lucile.py --secs 4
 
-The program will print a message upon completion.
+This will start the app. A "Cover" directory and the category's CSV files will be created in the app's directory.
+
+The app will print a message upon completion.
