@@ -130,9 +130,6 @@ def main():
         scour_category("http://books.toscrape.com/" + link)
         i = i + 1
 
-    if secs > 0:
-        time.sleep(secs)
-
     end = time.time()
     duration = int(end - start)
 
@@ -145,7 +142,7 @@ to a valid integer."""
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--secs",
-    help="Intervalle entre chaque scrape de livre (en seconde, à partir de 1).",
+    help="Delay between two books scrapes (in seconds, from 1 onward.)",
     type=int,
 )
 args = parser.parse_args()
@@ -154,4 +151,4 @@ if args.secs:
         secs = args.secs
         main()
     else:
-        print("Veuillez indiquer un chiffre supérieur à 0.")
+        print("Please input a number superior to 0.")
