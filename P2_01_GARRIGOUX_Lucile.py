@@ -2,13 +2,14 @@ from bs4 import BeautifulSoup
 import argparse
 import csv
 import os
+from pathlib import Path
 import requests
 import time
 
 url = requests.get("http://books.toscrape.com").text
 soup = BeautifulSoup(url, "lxml")
 cat_name = "To be filled"
-secs = 0
+delay = 0
 
 
 def extract_book(url_book):
@@ -46,10 +47,12 @@ def extract_book(url_book):
     cover = "http://books.toscrape.com" + img_url
 
     download_cover = requests.get(cover)
-    with open(f"covers\{upc}.jpg", "wb") as picture:
+    cover_folder = Path("covers/")
+    saved_cover = cover_folder / f"{upc}.jpg"
+    with open(saved_cover, "wb") as picture:
         picture.write(download_cover.content)
 
-    with open(f"{cat_name}.csv", "a+", newline="", errors="ignore") as csvfile:
+    with open(saved_cover, "a+", newline="", errors="ignore") as csvfile:
         fields = [
             url,
             upc,
@@ -80,8 +83,8 @@ def scour_page(url_page, url_category):
         )
         extract_book(link)
 
-        if secs > 0:
-            time.sleep(secs)
+        if delay > 0:
+            time.sleep(delay)
 
     if has_next:
         next_page = has_next.find("a")
@@ -100,7 +103,14 @@ def main():
     """Main function. Creates cover directory/csv files and calls scour_category."""
     start = int(time.time())
     print(f"Scraping commencé à {time.strftime('%T')}...")
-    os.mkdir("covers")
+    try:
+        os.mkdir("covers")
+        os.mkdir("categories")
+    except FileExistsError:
+        pass
+
+    categ_folder = Path("categories/")
+
     url = requests.get("http://books.toscrape.com").text
     soup = BeautifulSoup(url, "lxml")
     categ_list = soup.find("ul", class_="nav nav-list").find("ul").find_all("li")
@@ -109,7 +119,8 @@ def main():
     for category in categ_list:
         global cat_name
         cat_name = categ_list[i].text.strip()
-        with open(f"{cat_name}.csv", "w", newline="") as csvfile:
+        csv_path = categ_folder / f"{cat_name}.csv"
+        with open(csv_path, "w", newline="") as csvfile:
             fieldname = [
                 "product_page_url",
                 "universal_ product_code (upc)",
@@ -130,6 +141,9 @@ def main():
         scour_category("http://books.toscrape.com/" + link)
         i = i + 1
 
+    if delay > 0:
+        time.sleep(delay)
+
     end = time.time()
     duration = int(end - start)
 
@@ -141,14 +155,16 @@ def main():
 to a valid integer."""
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--secs",
-    help="Delay between two books scrapes (in seconds, from 1 onward.)",
-    type=int,
+    "--delay",
+    help="Intervalle entre chaque scrape de livre (en seconde, à partir de 1).",
+    type=float,
 )
 args = parser.parse_args()
-if args.secs:
-    if args.secs >= 0:
-        secs = args.secs
+if args.delay:
+    if args.delay > 0:
+        delay = float(args.delay)
         main()
     else:
-        print("Please input a number superior to 0.")
+        main()
+else:
+    main()
