@@ -59,14 +59,14 @@ Once the installation is complete, you can launch the app "as is". While in the 
 
     P2_01_GARRIGOUX_Lucile.py
 
-You can also set a delay between two book scrapes. To do so, input the following, where NUMBER is a positive integer:
+You can also set a delay between two book scrapes. To do so, input the following, where NUMBER is a positive number:
 
-    P2_01_GARRIGOUX_Lucile.py --secs NUMBER
+    P2_01_GARRIGOUX_Lucile.py --delay NUMBER
 
-For exemple:
+For exemple, for 4 milliseconds:
 
-    P2_01_GARRIGOUX_Lucile.py --secs 4
+    P2_01_GARRIGOUX_Lucile.py --delay .004
 
-This will start the app. A "Cover" directory and the category's CSV files will be created in the app's directory.
+This will start the app. The "Cover" and "Categories" directories will be created in the app's directory.
 
 The app will print a message upon completion.
