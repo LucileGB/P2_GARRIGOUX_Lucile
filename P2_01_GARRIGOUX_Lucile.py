@@ -151,12 +151,11 @@ def main():
     print(f"Durée : {duration} secondes, soit {round(duration/60)} minutes.")
 
 
-"""Calls main() only if the delay between two book scrapes has been set to 0 or
-to a valid integer."""
+"""Allow the user to set the delay between two book scrapes if wished."""
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--delay",
-    help="Intervalle entre chaque scrape de livre (en seconde, à partir de 1).",
+    help="Intervalle entre chaque scrape de livre (unité de base en seconde).",
     type=float,
 )
 args = parser.parse_args()
