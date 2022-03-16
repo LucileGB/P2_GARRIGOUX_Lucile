@@ -1,6 +1,6 @@
 <h1>Webscraper for the Books To Scrape website</h1>
 <h2>Features</h2>
-This tool scrapes the online bookseller *Book to Scrape* and retrieves the following informations from every book:
+This tool scrapes the online bookseller Books To Scrape and retrieves the following informations from every book:
 
     product_page_url
     universal_ product_code (upc)
@@ -17,7 +17,7 @@ It also downloads every cover in a separate "cover" folder. Covers are named aft
 
 The data is sorted in one csv file per category.
 
-You can set a delay between eacb book scrapes.
+You can set a delay between each book scrapes.
 
 <h2>Installation</h2>
 
