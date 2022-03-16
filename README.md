@@ -60,16 +60,18 @@ To install the necessary libraries, use the console to navigate to the directory
 <h2>Usage</h2>
 Once the installation is complete, you can launch the app "as is". While in the console, navigate to the app's directory then type the following:
 
-    P2_01_GARRIGOUX_Lucile.py
+    main.py
 
 You can also set a delay between two book scrapes. To do so, input the following, where NUMBER is a positive number:
 
-    P2_01_GARRIGOUX_Lucile.py --delay NUMBER
+    main.py --delay NUMBER
 
 For exemple, for 4 milliseconds:
 
-    P2_01_GARRIGOUX_Lucile.py --delay .004
+    main.py --delay .004
 
 This will start the app. The "Cover" and "Categories" directories will be created in the app's directory.
 
 The app will print a message upon completion.
+
+**If using LibreOffice to open the resulting CSV, please verify that the "Format fields between quotes as text" option is checked.**

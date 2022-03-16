@@ -1,4 +1,8 @@
-from .scraping import Scraper
+import argparse
+import time
+
+from scraping import Scraper
+
 
 def set_delay():
     delay = 0
