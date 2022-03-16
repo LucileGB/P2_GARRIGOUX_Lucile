@@ -1,6 +1,6 @@
-<h1>Webscraper for the *Book for Scrape* website</h1>
+<h1>Webscraper for the Books To Scrape website</h1>
 <h2>Features</h2>
-This tool scrapes the online bookseller *Book to Scrape*  and retrieves the following informations from every book:
+This tool scrapes the online bookseller *Book to Scrape* and retrieves the following informations from every book:
 
     product_page_url
     universal_ product_code (upc)
