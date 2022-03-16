@@ -34,9 +34,11 @@ If wished, you can install a virtual environment to run the app. Use the console
 The directory's name can be anything you wish. Then, activate your virtual environment by typing the following:
 
 **Window**
+
     DIRECTORYNAME\Scripts\activate
 
 **Linux**
+
     DIRECTORYNAME/bin/activate
 
 You'll see that the prompt prefixing your console location will change, for instance like so:

@@ -7,12 +7,12 @@ import requests
 import time
 
 #url = requests.get("http://books.toscrape.com").text
-delay = 0
 
 class Scraper:
-    def __init__(self):
+    def __init__(self, delay):
         self.root_url = "http://books.toscrape.com"
-        self.root_response = requests.get(root_url).text
+        self.root_response = requests.get(self.root_url).text
+        self.delay = delay
         self.categ_folder = Path("categories/")
 
     def init_scraping(self):
@@ -30,7 +30,7 @@ class Scraper:
 
     def category_set_up(self, category):
         """
-        Initialize a CSV file for the chosen category, then calls
+        Initializes a CSV file for the chosen category, then calls
         scrape_category.
         """
         category_name = category.text.strip()
@@ -54,18 +54,22 @@ class Scraper:
             writer = csv.writer(csvfile)
             writer.writerow(fieldnames)
 
-        scrape_category(f"http://books.toscrape.com/{link}")
+        self.scrape_category(f"http://books.toscrape.com/{link}")
 
 
     def scrape_category(self, url):
-        """Calls scour_page and stores url_category."""
-        response = requests.get(url_category).text
+        """
+        Calls scrape_page and stores url_category.
+        """
+        response = requests.get(url).text
         soup = BeautifulSoup(response, "lxml")
-        scour_page(url, url)
+        self.scrape_page(url, url)
 
 
-    def scour_page(url_page, url_category):
-        """Calls extract_book for each book link. Calls itself for the next page."""
+    def scrape_page(self, url_page, url_category):
+        """
+        Calls scrape_book for each book link. Calls itself for the next page.
+        """
         url = requests.get(url_page).text
         soup = BeautifulSoup(url, "lxml")
         book_list = soup.find_all("div", class_="image_container")
@@ -76,7 +80,7 @@ class Scraper:
             link = "http://books.toscrape.com/catalogue/" + info["href"].replace(
                 "../../../", ""
             )
-            extract_book(link)
+            self.scrape_book(link)
 
             if delay > 0:
                 time.sleep(delay)
@@ -84,99 +88,99 @@ class Scraper:
         if has_next:
             next_page = has_next.find("a")
             np_link = url_category + next_page["href"]
-            scour_page(np_link, url_category)
+            self.scrape_page(np_link, url_category)
 
 
-def extract_book(url_book):
-    """scrape the content of an individual book page"""
-    url = url_book
-    response = requests.get(url_book)
-    response.encoding = "UTF-8"
-    soup = BeautifulSoup(response.text, "lxml")
+    def scrape_book(self, url):
+        """
+        Scrapes the content of an individual book page.
+        """
+        url = url
+        response = requests.get(url)
+        response.encoding = "UTF-8"
+        soup = BeautifulSoup(response.text, "lxml")
 
-    info_table = soup.find("table", class_="table table-striped")
-    info_list = info_table.find_all("td")
+        info_table = soup.find("table", class_="table table-striped")
+        info_list = info_table.find_all("td")
 
-    upc = info_list[0].text
-    title = soup.find("li", class_="active").text
-    price_wtax = info_list[3].text
-    price_wotax = info_list[2].text
+        upc = info_list[0].text
+        title = soup.find("li", class_="active").text
+        price_wtax = info_list[3].text
+        price_wotax = info_list[2].text
 
-    if "In stock" in info_list[5].text:
-        availability = info_list[5].text.replace("(", "").split()
-        amount = availability[2]
-    else:
-        amount = "0"
+        if "In stock" in info_list[5].text:
+            availability = info_list[5].text.replace("(", "").split()
+            amount = availability[2]
+        else:
+            amount = "0"
 
-    if soup.find("p", {"class": ""}):
-        desc = soup.find("p", {"class": ""}).text
-    else:
-        desc = "No description."
+        if soup.find("p", {"class": ""}):
+            desc = soup.find("p", {"class": ""}).text
+        else:
+            desc = "No description."
 
-    categ_strip = soup.find("ul", class_="breadcrumb").text.split()
-    category = categ_strip[2]
-    ratings = soup.find("p", class_="star-rating")
-    review_rating = ratings["class"][1]
-    img_tag = soup.find("img")
-    img_url = img_tag["src"].replace("../..", "")
-    cover = self.root_url + img_url
+        categ_strip = soup.find("ul", class_="breadcrumb").text.split()
+        category = categ_strip[2]
+        print(category)
+        ratings = soup.find("p", class_="star-rating")
+        review_rating = ratings["class"][1]
+        img_tag = soup.find("img")
+        img_url = img_tag["src"].replace("../..", "")
+        cover = self.root_url + img_url
 
-    download_cover = requests.get(cover)
-    cover_folder = Path("covers/")
-    saved_cover = cover_folder / f"{upc}.jpg"
-    with open(saved_cover, "wb") as picture:
-        picture.write(download_cover.content)
+        download_cover = requests.get(cover)
+        cover_folder = Path("covers/")
+        saved_cover = cover_folder / f"{upc}.jpg"
 
-    with open(saved_cover, "a+", newline="", errors="ignore") as csvfile:
-        fields = [
-            url,
-            upc,
-            title,
-            price_wtax,
-            price_wotax,
-            amount,
-            desc,
-            category,
-            review_rating,
-            cover,
-        ]
-        writer = csv.writer(csvfile)
-        writer.writerow(fields)
+        with open(saved_cover, "wb") as picture:
+            picture.write(download_cover.content)
+
+        with open(saved_cover, "a+", newline="", errors="ignore") as csvfile:
+            fields = [
+                url,
+                upc,
+                title,
+                price_wtax,
+                price_wotax,
+                amount,
+                desc,
+                category,
+                review_rating,
+                cover,
+            ]
+            writer = csv.writer(csvfile)
+            writer.writerow(fields)
 
 
+def set_delay():
+    delay = 0
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--delay",
+        help="Intervalle entre chaque scrape de livre (unité de base : seconde).",
+        type=float,
+    )
+    args = parser.parse_args()
 
-def main():
-    """Main function. Creates cover directory/csv files and calls scour_category."""
+    if args.delay:
+        if args.delay > 0:
+            delay = float(args.delay)
+
+    return delay
+
+
+if __name__ == "__main__":
+    """Allow the user to set the delay between two book scrapes if wished."""
+    delay = set_delay()
     start = int(time.time())
+
     print(f"Scraping commencé à {time.strftime('%T')}...")
 
-
-    if delay > 0:
-        time.sleep(delay)
+    scraper = Scraper(delay)
+    scraper.init_scraping()
 
     end = time.time()
     duration = int(end - start)
 
     print(f"Scraping terminé à {time.strftime('%T')}.")
     print(f"Durée : {duration} secondes, soit {round(duration/60)} minutes.")
-
-
-"""Allow the user to set the delay between two book scrapes if wished."""
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--delay",
-    help="Intervalle entre chaque scrape de livre (unité de base en seconde).",
-    type=float,
-)
-args = parser.parse_args()
-if args.delay:
-    if args.delay > 0:
-        delay = float(args.delay)
-        main()
-    else:
-        main()
-else:
-    main()
-
-truc = Scraper()
-truc.init_scraping()
